@@ -2,7 +2,7 @@
 
 # Переменные с входными данными
 
-input_excel_uri: /syncfolder/excel_files/input_excel_uri_wrong.xlsx
+input_excel_uri: /syncfolder/excel_files/input_excel_uri.xlsx
 
 output_excel_uri1: /syncfolder/excel_files/output_excel_uri.xlsx
 
