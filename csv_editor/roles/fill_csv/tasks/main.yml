@@ -5,7 +5,7 @@
   tags: test_file_exists
 
 # Прогоняем pytest для проверки верности работы как отдельных функций, так и модуля в целом
-- name: Run tests
+- name: Run pytest tests
   import_tasks: test_result_pytest.yml
   tags: pytest
 

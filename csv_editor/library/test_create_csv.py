@@ -1,4 +1,5 @@
 #coding=utf-8
+from __future__ import print_function
 import pytest
 import create_csv # импортируем модуль для тестирования
 import json
@@ -54,25 +55,20 @@ def set_module_args(args):
     args = json.dumps({"ANSIBLE_MODULE_ARGS": args})
     basic._ANSIBLE_ARGS = to_bytes(args)
 
-# link1: https://docs.pytest.org/en/latest/xunit_setup.html for setUp and tearDown
-# link2: https://stackoverflow.com/questions/26405380/how-do-i-correctly-setup-and-teardown-my-pytest-class-with-tests
-# This is used to replace setUp and tearDown functions for TestExcelModule class
-# функция используется для 
-@pytest.fixture()
+# функция задает необходимые действия при вызове теста несколько раз
+# используется yield_fixture, которая сохраняет текущее состояние stdout и разрешает считывать данные из входного потока
+@pytest.yield_fixture
 def resource():
     backup = sys.stdout
-    sys.stdout = StringIO()
-    yield "resource"
+    sys.stdout = StringIO()   
+    yield "resource"   
     sys.stdout.close()
     sys.stdout = backup
 
-#
-# This class is used to test simple_module and create_csv modules (1st variant, the best IMHO)
-#
+
+# Класс обеспечивает тестирование на разных входных данных  
 class TestExcelModule(object):  
-    #
-    # create_csv test with different input parameters
-    #
+    # параметризуем тесты
     @pytest.mark.parametrize('test_input,expected', [
         (EXCEL_DATA_1, 'Successfully copied excel data'),
         (EXCEL_DATA_1, 'File already exists and correct. Do nothing'),
@@ -81,22 +77,24 @@ class TestExcelModule(object):
         (NO_INPUT_FILE_EXCEL_DATA, 'File cannot be open'),
     ])    
     def test_create_csv_has_correct_output(self, test_input, expected, resource):
-        # This is used to clear the directory from output files to be able to reuse test
+        # Для проверки происходит удаление файлов, если на вход поступили данные с пустым входным файлом
+        # В дальнейшем это позволит повторно вызывать тесты 
         if (test_input == NO_INPUT_FILE_EXCEL_DATA):
             if os.path.isfile(EXCEL_DATA_1['output_excel1']):
                 os.remove(EXCEL_DATA_1['output_excel1'])
             if os.path.isfile(EXCEL_DATA_3['output_excel1']):
                 os.remove(EXCEL_DATA_3['output_excel1'])
+        # Устанавливаем аргументы
         set_module_args(test_input)
+        # вызываем основную функцию с выставленными на вход параметрами
         with pytest.raises(SystemExit):
             create_csv.main()
+        # Получаем выходные данные и проверяем, что результат работы соотвествует ожиданиям
         output = sys.stdout.getvalue()
         assert expected in output
 
-# Test compare_style function
-# This is simple unit test of internal module function that compares styles of excel cells 
-def test_styles_are_equal_function():
-    #style_instance = create_csv.StyleClass()    
+# Более простой отдельный тест проверяет верность работы функции, проверяющей стили ячеек
+def test_styles_are_equal_function():  
     new_workbook = Workbook()
     new_workbook.create_sheet("Sheet1", 0)
     new_worksheet1 = new_workbook["Sheet1"]
@@ -142,7 +140,7 @@ def test_styles_are_equal_function():
     
     new_protection = Protection(locked=True,
                                 hidden=False)
-    
+    # cоздаем две ячейки с одинаковыми параметрами
     cell1 = new_worksheet1.cell(row = 1, column = 1)
     cell1.font = new_font
     cell1.fill = new_fill
