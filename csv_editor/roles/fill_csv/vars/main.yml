@@ -1,0 +1,20 @@
+---
+
+# Переменные с входными данными
+
+input_excel_uri: /syncfolder/excel_files/input_excel_uri.xlsx
+
+output_excel_uri1: /syncfolder/excel_files/output_excel_uri.xlsx
+
+output_excel_uri2: /syncfolder/excel_files/output_excel_uri2.xlsx
+
+header_row: [Name A, Interface A, Name B, Interface B]
+
+method_name: full copy # workbook copy
+
+data_rows: 
+  - [Device01, Eth0, Device02, Eth0]
+  - [Device02, Eth1, Device03, Eth1]
+  - [Device03, Eth0, Device04, Eth0]
+  - [Device05, Eth1, Device06, Eth1]
+  - [Device07, Eth1, Device08, Eth1]

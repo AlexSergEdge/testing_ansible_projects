@@ -1,0 +1,4 @@
+net_ip: 192.168.2.0
+ip_mask_len: 24
+gateway: 192.168.122.1
+device: virbr0

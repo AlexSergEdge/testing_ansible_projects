@@ -1,0 +1,20 @@
+---
+- name: Check if route exists
+  command: ip route get {{ net_ip }}/{{ ip_mask_len }}
+  register: check_result
+  become: True
+
+- debug:
+    msg: "{{ check_result }}"
+
+- name: Del route if previosly was added
+  command: ip route del {{ net_ip }}/{{ ip_mask_len }}
+  when: 'net_ip ~ " dev " ~ device ~ " src " ~ gateway in check_result.stdout'
+  become: True
+  
+- name: Check route table
+  command: route -n
+  register: after_result
+  
+- debug: 
+    msg: "{{ after_result }}"

@@ -1,0 +1,52 @@
+---
+# Проверяем входные файлы на существование
+- name: Run tests
+  import_tasks: check_file.yml
+  tags: test_file_exists
+
+# Вызываем модуль
+- name: Create csv Table
+  create_csv:
+    header_data: "{{ header_row }}"
+    function_name: "{{ method_name }}"
+    table_data: "{{ data_rows }}"
+    input_excel: "{{ input_excel_uri }}"
+    output_excel1: "{{ output_excel_uri1 }}"
+    output_excel2: "{{ output_excel_uri2 }}" #
+  register: result
+  become: True
+  tags: csv_creation
+  
+# Выводим результат работы модуля
+- name: Print result
+  debug:
+    msg: "{{ result }}"
+  tags: csv_creation
+
+# Вызываем модуль проверки созданной таблицы
+- name: Check Excel Table
+  check_csv_correct: 
+    header_data: "{{ header_row }}"
+    table_data: "{{ data_rows }}"
+    input_excel: "{{ input_excel_uri }}"
+    output_excel1: "{{ output_excel_uri1 }}"
+    output_excel2: "{{ output_excel_uri2 }}"
+  register: check_result
+  become: True
+  tags: csv_check
+  ignore_errors: yes
+
+# Если была ошибка выводим подробную информацию
+- name: fail if check was wrong
+  fail: 
+      msg: "{{ check_result }}"
+  when: check_result.failed
+  tags: csv_check
+ 
+- name: Print check result
+  debug:
+    msg: "{{ check_result }}"
+  tags: csv_check
+  
+  
+

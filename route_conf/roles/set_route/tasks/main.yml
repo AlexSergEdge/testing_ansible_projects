@@ -1,0 +1,38 @@
+---
+- name: Check if route exists
+  command: ip route get {{ net_ip }}/{{ ip_mask_len }}
+  register: check_result
+  become: True
+
+- debug:
+    msg: "{{ check_result }}"
+
+- name: Add route if previosly has not been added
+  command: ip route add {{ net_ip }}/{{ ip_mask_len }} via {{ gateway }} dev {{ device }}
+  when: 'net_ip ~ " dev " ~ device ~ " src " ~ gateway not in check_result.stdout'
+  become: True
+  
+- name: Check route table
+  command: route -n
+  register: after_result
+  
+- debug: 
+    msg: "{{ after_result }}"
+
+# Test using python script (no pytest)
+- name: Test using python script 
+  script: check_route_set.py "{{ after_result }}"
+  register: assert_res
+  ignore_errors: yes
+
+- debug:
+      msg: "{{ assert_res }}"
+
+# Test using bash script
+- name: Test using shell script
+  script: check_route_set.sh
+  register: bash_res
+  ignore_errors: yes
+     
+- debug:
+      msg: "{{ bash_res.stdout }}"

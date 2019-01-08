@@ -1,0 +1,22 @@
+---
+# Playbook is used to test roles that add and delete static route to ip route table in CentOS7
+- name: Set static route
+  connection: local
+  gather_facts: yes
+  hosts: localhost
+  tasks: 
+    - import_role:
+        name: set_route
+      tags: route_add
+      
+    - import_role:
+        name: set_route
+      tags: route_add_again
+      
+    - import_role:
+        name: del_route
+      tags: route_del
+      
+    - import_role: 
+        name: del_route
+      tags: route_del_again
