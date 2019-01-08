@@ -1,13 +1,4 @@
 ---
-# Используем pytest
-- name: Test with pytest
-  command: pytest --capture=no  library/
-  register: pytest_output
-  become: True
-
-- name: Print pytest output
-  debug:
-    msg: "{{ pytest_output }}"
 
 # Используем скрипт на python и проверку assert в ansible
 - name: Test with script and assert
@@ -18,7 +9,17 @@
     that:
       - "'File does not exist' not in cmd_result.stderr"
       - "'File exists' in cmd_result.stdout"
-  
+  register: pytest_assert_result
+  ignore_errors: yes
+
+- name: Debug output of test 1
+  debug:
+      msg: "{{ cmd_result }}"
+    
+- name: Debug output of assert 1
+  debug:
+      msg: "{{ pytest_assert_result }}"
+
 # Проверка только с использованием модулей ansible
 - name: Test with stat and assert
   stat: 
@@ -29,3 +30,19 @@
 - assert:
     that:
       - file_check_result.stat.exists
+  register: assert_result
+  ignore_errors: yes
+ 
+# Too mush info 
+#- name: Debug output of test 2
+#  debug:
+#      msg: "{{ file_check_result }}"
+
+- name: Fail if something went wrong (debug output of assert 2)
+  fail: 
+      msg: "{{ assert_result }} File path: {{ input_excel_uri }}"
+  when: assert_result.failed
+  
+- name: Debug output of assert 2
+  debug:
+      msg: "{{ assert_result }} File path: {{ input_excel_uri }}"

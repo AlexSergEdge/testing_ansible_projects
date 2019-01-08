@@ -1,6 +1,6 @@
 #coding=utf-8
 import pytest
-import create_csv #create_excel
+import create_csv # импортируем модуль для тестирования
 import json
 import sys
 import os
@@ -8,11 +8,11 @@ from ansible.module_utils._text import to_bytes
 from ansible.module_utils import basic
 from ansible.compat.tests import unittest
 from cStringIO import StringIO
-
 from openpyxl import Workbook, cell
 from openpyxl.styles import Font, PatternFill, Border, Protection, Alignment, Side
 
-# Тестовые данные для модуля create_csv
+# Далее приведены тестовые данные для модуля create_csv 
+
 # Данные 1 (модуль должен создавать новые файлы при первом вызове и ничего не делать при повторном вызовах)
 EXCEL_DATA_1 = {'header_data':['Name A', 'Interface A', 'Name B', 'Interface B'],
                     'function_name':'full copy',

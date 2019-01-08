@@ -9,4 +9,4 @@ input_file = sys.argv[1]
 if (os.path.isfile(input_file)):
     print('File exists')
 else:
-    print('File does not exist', file=sys.stderr)
+    print('File ' + input_file + ' does not exist', file=sys.stderr)

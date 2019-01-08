@@ -1,0 +1,10 @@
+---
+# Используем pytest
+- name: Test with pytest
+  command: pytest --capture=no  library/
+  register: pytest_output
+  become: True
+
+- name: Print pytest output
+  debug:
+    msg: "{{ pytest_output }}"
