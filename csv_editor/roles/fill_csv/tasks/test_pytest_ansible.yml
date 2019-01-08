@@ -1,0 +1,16 @@
+---
+
+# To use pytest_ansible - adding module to library
+- name: Add module to library
+  shell: export ANSIBLE_LIBRARY="{{ playbook_dir }}"s
+
+# Run tests
+- name: Run pytest_ansible
+  command: pytest -p no:cacheprovider "{{ playbook_dir }}"/library/test_pytest_ansible.py --ansible-inventory inventory/inventory --ansible-host-pattern all
+  register: pytest_ansible_result
+  ignore_errors: yes
+
+# Get result
+- name: Debug pytest_ansible
+  debug:
+    msg: "{{ pytest_ansible_result }}"

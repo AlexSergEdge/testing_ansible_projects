@@ -9,6 +9,11 @@
   import_tasks: test_result_pytest.yml
   tags: pytest
 
+# Прогоняем тесты при помощи ansible-pytest
+- name: Run pytest_ansible tests
+  import_tasks: test_pytest_ansible.yml
+  tags: pytest_ansible
+
 # Вызываем модуль
 - name: Create csv Table
   create_csv:

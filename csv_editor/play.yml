@@ -1,10 +1,12 @@
 ---
+
 # Playbook is used to fill csv table with data about network connections
 - name: Fill csv file with data
   connection: local
   gather_facts: yes
   hosts: localhost
   tasks: 
+    # Importig role - to use tags inside
     - import_role: 
         name: fill_csv
       tags: csv

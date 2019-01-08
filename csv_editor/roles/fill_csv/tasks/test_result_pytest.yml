@@ -1,7 +1,7 @@
 ---
 # Используем pytest
 - name: Test with pytest
-  command: pytest --capture=no  library/
+  command: pytest --capture=no  library/test_create_csv.py
   register: pytest_output
   become: True
 

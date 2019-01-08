@@ -55,6 +55,7 @@ def set_module_args(args):
     args = json.dumps({"ANSIBLE_MODULE_ARGS": args})
     basic._ANSIBLE_ARGS = to_bytes(args)
 
+# https://pytest.readthedocs.io/en/2.8.7/yieldfixture.html 
 # функция задает необходимые действия при вызове теста несколько раз
 # используется yield_fixture, которая сохраняет текущее состояние stdout и разрешает считывать данные из входного потока
 @pytest.yield_fixture
