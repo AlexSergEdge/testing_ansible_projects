@@ -18,3 +18,12 @@
   
 - debug: 
     msg: "{{ after_result }}"
+
+# Test using bash script
+- name: Test using shell script
+  script: ../../shared-files/check_route_set.sh
+  register: bash_res
+  ignore_errors: yes
+     
+- debug:
+      msg: "{{ bash_res.stdout }}"

@@ -21,7 +21,8 @@
 
 # Test using python script (no pytest)
 - name: Test using python script 
-  script: check_route_set.py "{{ after_result }}"
+  #script: "{{ playbook_dir }}/roles/shared-files/check_route_set.py {{ after_result }}"
+  script: ../../shared-files/check_route_set.py "{{ after_result }}" 
   register: assert_res
   ignore_errors: yes
 
@@ -30,7 +31,8 @@
 
 # Test using bash script
 - name: Test using shell script
-  script: check_route_set.sh
+  #script: "{{ playbook_dir }}/roles/shared-files/check_route_set.sh"
+  script: ../../shared-files/check_route_set.sh
   register: bash_res
   ignore_errors: yes
      
