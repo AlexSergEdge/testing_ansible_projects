@@ -11,7 +11,7 @@ output_excel_uri2: /syncfolder/excel_files/output_excel_uri2.xlsx
 header_row: [Name A, Interface A, Name B, Interface B]
 
 # Выбор метода копирования файлов
-method_name: full copy # workbook copy
+method_name: workbook copy # full copy
 
 data_rows: 
   - [Device01, Eth0, Device02, Eth0]

@@ -1,8 +1,15 @@
 ---
 
 # To use pytest_ansible - adding module to library
-- name: Add module to library
-  shell: export ANSIBLE_LIBRARY="{{ playbook_dir }}"s
+# - name: Add module to library
+#   shell: export ANSIBLE_LIBRARY="{{ playbook_dir }}"
+  
+# Work only on CenotOS7 and bash
+# Can check the version and depending on it choose the pah to file
+- name: Add module path to ~/.bashrc
+  lineinfile: 
+    path: ~/.bashrc
+    line: export ANSIBLE_LIBRARY="{{ playbook_dir }}/"
 
 # Run tests
 - name: Run pytest_ansible

@@ -6,6 +6,12 @@
   gather_facts: yes
   hosts: localhost
   tasks: 
+    #- name: Add module for pytest_ansible
+    #  shell: export ANSIBLE_LIBRARY=./
+    #  become: True
+    - debug:
+        msg: "{{ method_name }}"
+      
     # Importig role - to use tags inside
     - import_role: 
         name: fill_csv
